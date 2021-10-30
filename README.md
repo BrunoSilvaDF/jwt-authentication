@@ -4,7 +4,7 @@ https://youtu.be/25GS0MLT8JU
 
 # Curr time
 
-https://youtu.be/25GS0MLT8JU?t=558
+https://youtu.be/25GS0MLT8JU?t=1145
 
 ## Techs
 
