@@ -2,6 +2,7 @@
    "name": "jwt-auth-tuto-server",
    "version": "0.0.1",
    "description": "Awesome project developed with TypeORM.",
+   "license": "ISC",
    "devDependencies": {
       "@types/node": "^8.0.29",
       "git-commit-msg-linter": "^3.2.8",
