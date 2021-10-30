@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import express from 'express'
-import { createApollo } from './apollo-server'
+import { createApollo } from './utils/create-apollo-server'
 
 const server = async () => {
   const apollo = await createApollo()

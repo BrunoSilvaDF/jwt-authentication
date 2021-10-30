@@ -1,4 +1,4 @@
-import { createApollo } from './apollo-server'
+import { createApollo } from './utils/create-apollo-server'
 
 describe('UserResplver', () => {
   test('Should return hello', async () => {
