@@ -1,6 +1,8 @@
 import 'reflect-metadata'
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
+import { buildSchema } from 'type-graphql'
+import { UserResolver } from './user-resolver'
 
 const server = async () => {
   const app = express()
@@ -9,16 +11,9 @@ const server = async () => {
   app.get('/', (_, res) => res.send('Server started'))
 
   const apollo = new ApolloServer({
-    typeDefs: `
-      type Query {
-        hello: String!
-      }
-    `,
-    resolvers: {
-      Query: {
-        hello: () => 'hello world',
-      },
-    },
+    schema: await buildSchema({
+      resolvers: [UserResolver],
+    }),
   })
 
   await apollo.start()
