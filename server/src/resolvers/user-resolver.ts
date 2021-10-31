@@ -6,11 +6,13 @@ import {
   ObjectType,
   Query,
   Resolver,
+  UseMiddleware,
 } from 'type-graphql'
 import { hash, compare } from 'bcryptjs'
 import { User } from '../entities'
 import { MyContext } from '../types'
 import { auth } from '../utils'
+import { isAuth } from '../middleware'
 
 @ObjectType()
 class LoginResponse {
@@ -23,6 +25,12 @@ export class UserResolver {
   @Query(() => String)
   hello() {
     return 'hi!'
+  }
+
+  @Query(() => String)
+  @UseMiddleware(isAuth)
+  bye(@Ctx() { payload }: MyContext) {
+    return `your user id is ${payload!.userId}`
   }
 
   @Query(() => [User])
@@ -42,7 +50,7 @@ export class UserResolver {
         password: hashedPassword,
       })
     } catch (err) {
-      console.error(err)
+      console.error('[error]', err)
       return false
     }
     return true
@@ -69,7 +77,11 @@ export class UserResolver {
 
     // login successful
 
-    res.cookie('jid', auth.createRefreshToken(user))
+    res.cookie('jid', auth.createRefreshToken(user), {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+    })
 
     return {
       accessToken: auth.createAccessToken(user),
