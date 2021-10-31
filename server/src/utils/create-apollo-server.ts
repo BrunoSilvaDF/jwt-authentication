@@ -1,11 +1,11 @@
 import 'reflect-metadata'
 import { ApolloServer } from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
-import { UserResolver } from '../user-resolver'
+import resolvers from '../resolvers'
 
 export const createApollo = async () =>
   new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver],
+      resolvers: [resolvers.UserResolver],
     }),
   })

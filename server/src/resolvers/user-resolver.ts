@@ -1,7 +1,7 @@
 import { Arg, Field, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
 import { hash, compare } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
-import { User } from './entities/user'
+import { User } from '../entities'
 
 @ObjectType()
 class LoginResponse {
