@@ -1,6 +1,13 @@
-import { Arg, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Field, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
 import { User } from './entities/user'
-import { hash } from 'bcryptjs'
+import { hash, compare } from 'bcryptjs'
+import { EntityNotFoundError } from 'typeorm'
+
+@ObjectType()
+class LoginResponse {
+  @Field()
+  accessToken: string
+}
 
 @Resolver()
 export class UserResolver {
@@ -19,8 +26,8 @@ export class UserResolver {
     @Arg('email') email: string,
     @Arg('password') password: string
   ): Promise<Boolean> {
-    const hashedPassword = await hash(password, 12)
     try {
+      const hashedPassword = await hash(password, 12)
       await User.insert({
         email,
         password: hashedPassword,
@@ -30,5 +37,30 @@ export class UserResolver {
       return false
     }
     return true
+  }
+
+  @Mutation(() => LoginResponse)
+  async login(
+    @Arg('email') email: string,
+    @Arg('password') password: string
+  ): Promise<LoginResponse> {
+    const user = await User.findOne({ where: { email } })
+
+    if (!user) {
+      console.error(`[error] user { email: ${email} } not found`)
+      throw new Error('could not find user')
+    }
+
+    const valid = await compare(password, user.password)
+
+    if (!valid) {
+      throw new Error('bad password')
+    }
+
+    // login successful
+
+    return {
+      accessToken: '',
+    }
   }
 }
