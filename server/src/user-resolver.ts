@@ -26,8 +26,8 @@ export class UserResolver {
     @Arg('email') email: string,
     @Arg('password') password: string
   ): Promise<Boolean> {
+    const hashedPassword = await hash(password, 12)
     try {
-      const hashedPassword = await hash(password, 12)
       await User.insert({
         email,
         password: hashedPassword,
