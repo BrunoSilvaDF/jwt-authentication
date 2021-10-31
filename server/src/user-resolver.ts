@@ -1,7 +1,7 @@
 import { Arg, Field, Mutation, ObjectType, Query, Resolver } from 'type-graphql'
-import { User } from './entities/user'
 import { hash, compare } from 'bcryptjs'
-import { EntityNotFoundError } from 'typeorm'
+import { sign } from 'jsonwebtoken'
+import { User } from './entities/user'
 
 @ObjectType()
 class LoginResponse {
@@ -60,7 +60,9 @@ export class UserResolver {
     // login successful
 
     return {
-      accessToken: '',
+      accessToken: sign({ userId: user.id }, 'lkasjdlfjalksejf', {
+        expiresIn: '15m',
+      }),
     }
   }
 }
