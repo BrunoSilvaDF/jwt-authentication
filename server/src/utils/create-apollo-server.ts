@@ -8,4 +8,5 @@ export const createApollo = async () =>
     schema: await buildSchema({
       resolvers: [resolvers.UserResolver],
     }),
+    context: ({ req, res }) => ({ req, res }),
   })
