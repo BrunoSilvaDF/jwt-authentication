@@ -8,9 +8,9 @@ import {
   Resolver,
 } from 'type-graphql'
 import { hash, compare } from 'bcryptjs'
-import { sign } from 'jsonwebtoken'
 import { User } from '../entities'
-import { MyContext } from 'src/types'
+import { MyContext } from '../types'
+import { auth } from '../utils'
 
 @ObjectType()
 class LoginResponse {
@@ -69,23 +69,10 @@ export class UserResolver {
 
     // login successful
 
-    // refreshToken
-    res.cookie(
-      'jid',
-      sign({ userId: user.id }, 'naslkfweajfçlk', {
-        expiresIn: '7d',
-      }),
-      {
-        httpOnly: true,
-        sameSite: 'none',
-        secure: true,
-      }
-    )
+    res.cookie('jid', auth.createRefreshToken(user))
 
     return {
-      accessToken: sign({ userId: user.id }, 'lkasjdlfjalksejf', {
-        expiresIn: '15m',
-      }),
+      accessToken: auth.createAccessToken(user),
     }
   }
 }
