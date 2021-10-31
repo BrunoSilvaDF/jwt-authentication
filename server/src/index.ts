@@ -1,10 +1,10 @@
 import 'reflect-metadata'
 import express from 'express'
+import cors from 'cors'
 import { createConnection } from 'typeorm'
 import { createApollo } from './utils'
 
 const server = async () => {
-  const apollo = await createApollo()
   const app = express()
   const port = 4000
 
@@ -12,8 +12,16 @@ const server = async () => {
 
   await createConnection()
 
+  app.use(
+    cors({
+      origin: ['*', 'https://studio.apollographql.com'],
+      credentials: true,
+    })
+  )
+
+  const apollo = await createApollo()
   await apollo.start()
-  apollo.applyMiddleware({ app })
+  apollo.applyMiddleware({ app, cors: false })
 
   app.listen(port, () => {
     console.log('[server] express server started at', port)
