@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import express from 'express'
-import { createApollo } from './utils/create-apollo-server'
 import { createConnection } from 'typeorm'
+import { createApollo } from './utils/create-apollo-server'
 
 const server = async () => {
   const apollo = await createApollo()
@@ -16,7 +16,7 @@ const server = async () => {
   apollo.applyMiddleware({ app })
 
   app.listen(port, () => {
-    console.log('express server started at ', port)
+    console.log('[server] express server started at', port)
   })
 }
 
