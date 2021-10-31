@@ -9,6 +9,11 @@ export class UserResolver {
     return 'hi!'
   }
 
+  @Query(() => [User])
+  users(): Promise<User[]> {
+    return User.find()
+  }
+
   @Mutation(() => Boolean)
   async register(
     @Arg('email') email: string,
