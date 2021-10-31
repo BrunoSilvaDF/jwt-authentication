@@ -1,11 +1,14 @@
 import 'reflect-metadata'
 import express from 'express'
 import { createApollo } from './utils/create-apollo-server'
+import { createConnection } from 'typeorm'
 
 const server = async () => {
   const apollo = await createApollo()
   const app = express()
   const port = 4000
+
+  await createConnection()
 
   app.get('/', (_, res) => res.send('Server started'))
 
