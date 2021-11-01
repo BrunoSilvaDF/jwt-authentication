@@ -1,9 +1,15 @@
 import React from 'react'
 import { BrowserRouter, Link, Route, Switch } from 'react-router-dom'
-import { HelloPage, HomePage, LoginPage, RegisterPage } from './pages'
-import { UsersPage } from './pages/users-page'
+import {
+  HelloPage,
+  HomePage,
+  LoginPage,
+  RegisterPage,
+  ByePage,
+  UsersPage,
+} from './pages'
 
-const Router = () => {
+export const Router = () => {
   return (
     <BrowserRouter>
       <header>
@@ -20,6 +26,9 @@ const Router = () => {
           <li>
             <Link to='/login'>login</Link>
           </li>
+          <li>
+            <Link to='/bye'>bye</Link>
+          </li>
         </ul>
       </header>
       <Switch>
@@ -27,10 +36,9 @@ const Router = () => {
         <Route path='/register' component={RegisterPage} />
         <Route path='/users' component={UsersPage} />
         <Route path='/hello' component={HelloPage} />
+        <Route path='/bye' component={ByePage} />
         <Route path='/' component={HomePage} />
       </Switch>
     </BrowserRouter>
   )
 }
-
-export default Router

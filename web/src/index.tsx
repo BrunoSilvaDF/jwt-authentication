@@ -1,17 +1,11 @@
-import React from 'react'
 import ReactDOM from 'react-dom'
-import Router from './router'
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
-
-const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql',
-  credentials: 'include',
-  cache: new InMemoryCache(),
-})
+import { ApolloProvider } from '@apollo/client'
+import apolloClient from './apollo-client'
+import { App } from './app'
 
 ReactDOM.render(
-  <ApolloProvider client={client}>
-    <Router />
+  <ApolloProvider client={apolloClient}>
+    <App />
   </ApolloProvider>,
   document.getElementById('root')
 )

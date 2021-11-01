@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import { useLoginMutation } from '../generated/graphql'
+import { setAccessToken } from '../accessToken'
+import { RouteComponentProps } from 'react-router-dom'
 
 interface LoginPageProps {}
 
-export const LoginPage: React.FC<LoginPageProps> = () => {
+export const LoginPage: React.FC<RouteComponentProps & LoginPageProps> = ({
+  history,
+}) => {
   const [login] = useLoginMutation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -22,7 +26,11 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
                 password,
               },
             })
-            console.log(res.data)
+            if (res.data) {
+              setAccessToken(res.data.login.accessToken)
+              alert('login successful')
+              history.push('/')
+            }
           } catch (err: any) {
             setError(err?.message)
           }

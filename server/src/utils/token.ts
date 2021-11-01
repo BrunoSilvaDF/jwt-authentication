@@ -10,7 +10,7 @@ export const createAccessToken = (user: User) => {
   return criarJwt(
     { userId: user.id, tokenVersion: 1 },
     process.env.ACCESS_TOKEN_SECRET!,
-    '15m'
+    '30s'
   )
 }
 
