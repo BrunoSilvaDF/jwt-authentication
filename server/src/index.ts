@@ -6,19 +6,14 @@ import { createConnection } from 'typeorm'
 import cookieParser from 'cookie-parser'
 import { createApollo } from './utils'
 import { refreshTokenRoute } from './routes'
+import { applyCors } from './middleware'
 
 const server = async () => {
   const app = express()
   const port = 4000
 
   app.use(cookieParser())
-
-  app.use(
-    cors({
-      origin: ['*', 'https://studio.apollographql.com'],
-      credentials: true,
-    })
-  )
+  app.use(applyCors())
 
   app.get('/', (_, res) => res.send('Server started'))
 
