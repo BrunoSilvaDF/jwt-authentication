@@ -2,10 +2,6 @@
 
 https://youtu.be/25GS0MLT8JU
 
-# Curr time
-
-https://youtu.be/25GS0MLT8JU?t=7702
-
 ## Techs
 
 Typescript :: GraphQL :: TypeGraphQL :: TypeORM :: PostgreSQL :: React :: Apollo
