@@ -1,18 +1,14 @@
 import React from 'react'
-import { gql, useQuery } from '@apollo/client'
+import { useHelloQuery } from './generated/graphql'
 
 const App = () => {
-  const { data, loading } = useQuery(gql`
-    query {
-      hello
-    }
-  `)
+  const { data, loading } = useHelloQuery()
 
   if (loading) {
     return <div>loading...</div>
   }
 
-  return <div className='App'>{data.hello}</div>
+  return <div className='App'>{data?.hello}</div>
 }
 
 export default App
