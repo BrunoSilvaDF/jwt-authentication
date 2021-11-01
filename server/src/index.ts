@@ -10,7 +10,7 @@ import { applyCors } from './middleware'
 
 const server = async () => {
   const app = express()
-  const port = 4000
+  const port = process.env.PORT
 
   app.use(cookieParser())
   app.use(applyCors())
@@ -19,7 +19,26 @@ const server = async () => {
 
   app.post('/refresh-token', refreshTokenRoute)
 
-  await createConnection()
+  const conn = await createConnection({
+    type: 'postgres',
+    host: process.env.DATABASE_HOST,
+    port: 5432,
+    username: 'postgres',
+    password: 'postgres',
+    database: 'jwt-auth-tuto',
+    synchronize: true,
+    logging: false,
+    entities: ['src/entities/**/*.ts'],
+    migrations: ['src/migration/**/*.ts'],
+    subscribers: ['src/subscriber/**/*.ts'],
+    cli: {
+      entitiesDir: 'src/entities',
+      migrationsDir: 'src/migration',
+      subscribersDir: 'src/subscriber',
+    },
+  })
+
+  console.log('[database] db connection = ', conn.isConnected)
 
   const apollo = await createApollo()
   await apollo.start()
@@ -31,21 +50,3 @@ const server = async () => {
 }
 
 server().catch(err => console.error(err.message))
-
-// createConnection()
-//   .then(async connection => {
-//     console.log('Inserting a new user into the database...')
-//     const user = new User()
-//     user.firstName = 'Timber'
-//     user.lastName = 'Saw'
-//     user.age = 25
-//     await connection.manager.save(user)
-//     console.log('Saved a new user with id: ' + user.id)
-
-//     console.log('Loading users from the database...')
-//     const users = await connection.manager.find(User)
-//     console.log('Loaded users: ', users)
-
-//     console.log('Here you can setup and run express/koa/any other framework.')
-//   })
-//   .catch(error => console.log(error))

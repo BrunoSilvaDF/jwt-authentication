@@ -6,7 +6,7 @@ export const App: React.FC = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('http://localhost:4000/refresh-token', {
+    fetch(process.env.REACT_APP_REFRESH_TOKEN!, {
       method: 'post',
       credentials: 'include',
     })

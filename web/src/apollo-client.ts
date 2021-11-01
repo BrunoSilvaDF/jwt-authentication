@@ -10,7 +10,7 @@ import jwtDecode, { JwtPayload } from 'jwt-decode'
 import { getAccessToken, setAccessToken } from './accessToken'
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: process.env.REACT_APP_APOLLO_CLIENT,
   credentials: 'include',
 })
 
@@ -42,7 +42,7 @@ const tokenRefresherLink = new TokenRefreshLink({
     }
   },
   fetchAccessToken: () => {
-    return fetch('http://localhost:4000/refresh-token', {
+    return fetch(process.env.REACT_APP_REFRESH_TOKEN!, {
       method: 'post',
       credentials: 'include',
     })
@@ -55,7 +55,7 @@ const tokenRefresherLink = new TokenRefreshLink({
 })
 
 export default new ApolloClient({
-  uri: 'http://localhost:4000/graphql',
+  uri: process.env.REACT_APP_APOLLO_CLIENT,
   credentials: 'include',
   cache: new InMemoryCache(),
   link: from([tokenRefresherLink, authLink, httpLink]),
