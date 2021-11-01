@@ -1,10 +1,15 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { useMeQuery } from '../generated/graphql'
+import { Link, withRouter } from 'react-router-dom'
+import { useLogoutMutation, useMeQuery } from '../generated/graphql'
+import { setAccessToken } from '../accessToken'
 
-export const Header: React.FC = () => {
-  const { data } = useMeQuery()
-  const isAuth = !!data?.me
+export const Header = withRouter(({ history }) => {
+  const { data, loading } = useMeQuery()
+  const [logout, { client }] = useLogoutMutation()
+  const isAuth = !loading && data && data.me
+  if (loading) {
+    return <div>...loading</div>
+  }
   return (
     <header>
       <ul>
@@ -27,8 +32,22 @@ export const Header: React.FC = () => {
         <li>
           <Link to='/bye'>bye</Link>
         </li>
+        {isAuth && (
+          <li>
+            <button
+              onClick={async () => {
+                await logout()
+                setAccessToken('')
+                await client.resetStore()
+                history.push('/')
+              }}
+            >
+              logout
+            </button>
+          </li>
+        )}
       </ul>
       {isAuth && `hello! you are logged in as ${data.me!.email}`}
     </header>
   )
-}
+})
