@@ -29,3 +29,7 @@ export const sendRefreshToken = (res: Response, user: User) => {
     secure: true,
   })
 }
+
+export const clearRefreshToken = (res: Response) => {
+  res.cookie('jid', '')
+}
