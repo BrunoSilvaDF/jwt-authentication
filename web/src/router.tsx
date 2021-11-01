@@ -1,5 +1,6 @@
 import React from 'react'
-import { BrowserRouter, Link, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { Header } from './components/header'
 import {
   HelloPage,
   HomePage,
@@ -12,25 +13,7 @@ import {
 export const Router = () => {
   return (
     <BrowserRouter>
-      <header>
-        <ul>
-          <li>
-            <Link to='/'>home</Link>
-          </li>
-          <li>
-            <Link to='/users'>users</Link>
-          </li>
-          <li>
-            <Link to='/register'>register</Link>
-          </li>
-          <li>
-            <Link to='/login'>login</Link>
-          </li>
-          <li>
-            <Link to='/bye'>bye</Link>
-          </li>
-        </ul>
-      </header>
+      <Header />
       <Switch>
         <Route path='/login' component={LoginPage} />
         <Route path='/register' component={RegisterPage} />
