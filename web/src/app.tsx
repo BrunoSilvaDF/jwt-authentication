@@ -8,6 +8,10 @@ const App = () => {
     return <div>loading...</div>
   }
 
+  if (!data) {
+    return <div>no data found</div>
+  }
+
   return <div className='App'>{data?.hello}</div>
 }
 
