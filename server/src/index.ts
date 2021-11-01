@@ -11,6 +11,11 @@ const server = async () => {
 
   app.get('/', (_, res) => res.send('Server started'))
 
+  app.post('/refresh-token', (req, res) => {
+    console.log(req.headers)
+    res.send('hau')
+  })
+
   await createConnection()
 
   app.use(
