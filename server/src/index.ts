@@ -3,20 +3,15 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import { createConnection } from 'typeorm'
+import cookieParser from 'cookie-parser'
 import { createApollo } from './utils'
+import { refreshTokenRoute } from './routes'
 
 const server = async () => {
   const app = express()
   const port = 4000
 
-  app.get('/', (_, res) => res.send('Server started'))
-
-  app.post('/refresh-token', (req, res) => {
-    console.log(req.headers)
-    res.send('hau')
-  })
-
-  await createConnection()
+  app.use(cookieParser())
 
   app.use(
     cors({
@@ -24,6 +19,12 @@ const server = async () => {
       credentials: true,
     })
   )
+
+  app.get('/', (_, res) => res.send('Server started'))
+
+  app.post('/refresh-token', refreshTokenRoute)
+
+  await createConnection()
 
   const apollo = await createApollo()
   await apollo.start()

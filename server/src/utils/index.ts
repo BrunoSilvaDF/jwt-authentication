@@ -1,2 +1,2 @@
 export * from './create-apollo-server'
-export * as auth from './token'
+export * as token from './token'
