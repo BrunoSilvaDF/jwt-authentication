@@ -11,10 +11,11 @@ import {
 } from 'type-graphql'
 import { hash, compare } from 'bcryptjs'
 import { User } from '../entities'
-import { MyContext } from '../types'
+import { MyContext, MyJwtPayload } from '../types'
 import { token } from '../utils'
 import { isAuth } from '../middleware'
 import { getConnection } from 'typeorm'
+import { verify } from 'jsonwebtoken'
 
 @ObjectType()
 class LoginResponse {
@@ -24,6 +25,23 @@ class LoginResponse {
 
 @Resolver()
 export class UserResolver {
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() { req, payload }: MyContext): Promise<User | null> {
+    const authorization = req.headers['authorization']
+    if (!authorization) {
+      return null
+    }
+    try {
+      const token = authorization.split(' ')[1]
+      const newPayload = verify(token, process.env.ACCESS_TOKEN_SECRET!)
+      payload = newPayload as MyJwtPayload
+      return await User.findOneOrFail(payload.userId)
+    } catch (err) {
+      console.error('[error]', err)
+      return null
+    }
+  }
+
   @Query(() => String)
   hello() {
     return 'hi!'
