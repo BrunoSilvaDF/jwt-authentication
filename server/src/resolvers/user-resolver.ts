@@ -2,6 +2,7 @@ import {
   Arg,
   Ctx,
   Field,
+  Int,
   Mutation,
   ObjectType,
   Query,
@@ -13,6 +14,7 @@ import { User } from '../entities'
 import { MyContext } from '../types'
 import { token } from '../utils'
 import { isAuth } from '../middleware'
+import { getConnection } from 'typeorm'
 
 @ObjectType()
 class LoginResponse {
@@ -82,5 +84,14 @@ export class UserResolver {
     return {
       accessToken: token.createAccessToken(user),
     }
+  }
+
+  @Mutation(() => Boolean)
+  async revokeRefreshTokensForUser(@Arg('userId', () => Int) userId: number) {
+    await getConnection()
+      .getRepository(User)
+      .increment({ id: userId }, 'tokenVersion', 1)
+
+    return true
   }
 }

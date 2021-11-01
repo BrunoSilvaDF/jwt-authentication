@@ -7,11 +7,19 @@ const criarJwt = (payload: MyJwtPayload, secret: string, expiresIn: string) =>
   sign(payload, secret, { expiresIn })
 
 export const createAccessToken = (user: User) => {
-  return criarJwt({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET!, '15m')
+  return criarJwt(
+    { userId: user.id, tokenVersion: 1 },
+    process.env.ACCESS_TOKEN_SECRET!,
+    '15m'
+  )
 }
 
 export const createRefreshToken = (user: User) => {
-  return criarJwt({ userId: user.id }, process.env.REFRESH_TOKEN_SECRET!, '7d')
+  return criarJwt(
+    { userId: user.id, tokenVersion: user.tokenVersion },
+    process.env.REFRESH_TOKEN_SECRET!,
+    '7d'
+  )
 }
 
 export const sendRefreshToken = (res: Response, user: User) => {

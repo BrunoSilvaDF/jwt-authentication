@@ -3,10 +3,12 @@ import { verify } from 'jsonwebtoken'
 import { token } from '../utils'
 import { User } from '../entities'
 
+const invalidToken = { ok: false, accessToken: '' }
+
 export const refreshTokenRoute = async (req: Request, res: Response) => {
   const accessToken = req.cookies.jid
   if (!accessToken) {
-    return res.send({ ok: false, accessToken: '' })
+    return res.send(invalidToken)
   }
 
   let payload: any = null
@@ -14,14 +16,20 @@ export const refreshTokenRoute = async (req: Request, res: Response) => {
     payload = verify(accessToken, process.env.REFRESH_TOKEN_SECRET!)
   } catch (err) {
     console.error('[error]', err)
-    return res.send({ ok: false, accessToken: '' })
+    return res.send(invalidToken)
   }
 
   // token is valid and we can sand back an accessToken
   const user = await User.findOne({ id: payload.userId })
 
   if (!user) {
-    return res.send({ ok: false, accessToken: '' })
+    console.error('[error] invalid token')
+    return res.send(invalidToken)
+  }
+
+  if (user.tokenVersion !== payload.tokenVersion) {
+    console.error('[error] invalid token')
+    return res.send(invalidToken)
   }
 
   token.sendRefreshToken(res, user)
