@@ -25,6 +25,7 @@ export const createRefreshToken = (user: User) => {
 export const sendRefreshToken = (res: Response, user: User) => {
   res.cookie('jid', createRefreshToken(user), {
     httpOnly: true,
+    path: '/refresh-token',
     sameSite: 'none',
     secure: true,
   })
