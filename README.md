@@ -2,6 +2,8 @@
 
 Code based on Ben Awad's tutorial "JWT Authentication Node.js Tutorial with GraphQL and React" (https://youtu.be/25GS0MLT8JU)
 
+Small commits (with AngularJS Git Commit Message Conventions)
+
 Added docker compose to build the project
 
 ## Running
