@@ -1,7 +1,22 @@
-# Source
+# JWT Authentication
 
-https://youtu.be/25GS0MLT8JU
+Code based on Ben Awad's tutorial "JWT Authentication Node.js Tutorial with GraphQL and React" (https://youtu.be/25GS0MLT8JU)
 
+Added docker compose to build the project
+
+## Running
+
+### With docker compose
+
+run `docker-compose up -d`
+
+###  With npm/yarn
+
+1. on ./server
+	1. run `npm run up` / `yarn up`
+	2. run `npm run dev` / `yarn dev`
+2. on ./web
+	1. run `npm start` / `yarn start`
 ## Techs
 
 Typescript :: GraphQL :: TypeGraphQL :: TypeORM :: PostgreSQL :: React :: Apollo
